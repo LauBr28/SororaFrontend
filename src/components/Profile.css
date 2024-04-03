@@ -1,0 +1,109 @@
+/* Profile.css */
+
+.profile-wrapper {
+    width: 600px; /* Aumentar el tamaño del cuadrado transparente */
+    min-height: 600px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    color: aliceblue;
+    border-radius: 10px;
+    padding: 30px 40px;
+    display: flex; /* Para alinear el contenido */
+    flex-direction: column; /* Apilar elementos verticalmente */
+    align-items: center; /* Centrar horizontalmente */
+}
+
+.profile-wrapper h2 {
+    font-size: 36px;
+    text-align: center;
+    margin-top: 0; /* Eliminar el margen superior */
+    margin-bottom: 30px; /* Espaciado adicional debajo del título */
+}
+
+.profile-input-description {
+    width: 100%; /* Cambiar el ancho de profile-input-description */
+    height: 100px; 
+    margin: 20px auto;
+    padding: 15px;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 10px;
+    font-size: 16px;
+    color: #fff;
+    background: transparent;
+    outline: none;
+}
+
+.profile-input-url {
+    width: 100%; /* Cambiar el ancho de profile-input-url */
+    height: 50px; 
+    margin: 20px auto;
+    padding: 15px;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 10px;
+    font-size: 16px;
+    color: #fff;
+    background: transparent;
+    outline: none;
+}
+
+.profile-input-label {
+    text-align: left; /* Alinear el texto a la izquierda */
+    margin-bottom: 10px; /* Espacio inferior entre la etiqueta y el campo de entrada */
+    color: #fff; /* Color del texto */
+    font-weight: bold; /* Hacer que el texto esté en negrita */
+}
+
+.profile-buttons {
+    display: flex; /* Para alinear los botones horizontalmente */
+    justify-content: center; /* Centrar los botones horizontalmente */
+}
+
+
+.profile-button {
+    width: 150px; /* Ancho fijo del botón */
+    height: 45px;
+    background-color: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 700;
+    margin: 0 10px; /* Espacio entre los botones */
+}
+
+.profile-button:last-child {
+    margin-right: 0; /* Eliminar el margen derecho del último botón */
+}
+
+.profile-button:hover {
+    transform: scale(1.1);
+}
+
+
+.profile-title {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-content {
+    text-align: center;
+}
+
+.profile-image {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.profile-description {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 20px;
+}
