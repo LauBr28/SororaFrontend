@@ -3,6 +3,7 @@ import axios from 'axios';
 import './Profile.css'; 
 
 const Profile = () => {
+  const [userData, setUserData] = useState(null); // Estado para almacenar los datos del usuario
   const [description, setDescription] = useState('');
   const [profilePictureUrl, setProfilePictureUrl] = useState('');
   const [hasProfile, setHasProfile] = useState(false); // Estado para verificar si el usuario tiene perfil
@@ -11,37 +12,55 @@ const Profile = () => {
 
   useEffect(() => {
     // Obtener el userId del localStorage al cargar el componente
-    //console.log(localStorage.getItem('userId'));
     const userIdFromLocalStorage = localStorage.getItem('userId');
     if (userIdFromLocalStorage) {
         setUserId(userIdFromLocalStorage);
     }
-}, []);
+  }, []);
 
-useEffect(() => {
+  useEffect(() => {
     // Realizar una solicitud GET para obtener el perfil del usuario cuando userId se actualiza
     if (userId) {
       fetchUserProfile();
     }
   }, [userId]);
-
+  
   const fetchUserProfile = async () => {
     try {
-      // Simulamos una solicitud POST al endpoint para actualizar el perfil
-      console.log(userId);
       const response = await axios.get(`http://localhost:8080/api/v1/user/profile?userId=${userId}`);
-
       const userProfileData = response.data;
-      console.log(response.data);
-      setDescription(userProfileData.description || ''); // Establecer la descripción del perfil, si está presente
-      setProfilePictureUrl(userProfileData.profilePictureUrl || ''); // Establecer la URL de la imagen del perfil, si está presente
-      setHasProfile(!!userProfileData.description || !!userProfileData.profilePictureUrl); // Verificar si el usuario tiene perfil
+      
+      // Guardar la información del usuario y del perfil en el estado userData
+      setUserData(userProfileData); 
+
+      // Acceder a userProfileDto en lugar de userProfileData directamente
+      setDescription(userProfileData.userProfileDto.description || ''); 
+      setProfilePictureUrl(userProfileData.userProfileDto.profilePictureUrl || '');
+      setHasProfile(!!userProfileData.userProfileDto.description || !!userProfileData.userProfileDto.profilePictureUrl);
     } catch (error) {
       console.error('Error fetching user profile:', error);
-      // Si la solicitud falla, se manejará aquí
     }
   };
   
+  // Renderizar los datos del usuario y del perfil si están disponibles
+  const renderProfile = () => {
+    if (userData) {
+      return (
+        <div className="profile-content">
+          <h2 className="profile-username">{userData.username}</h2>
+          <p className="profile-email">{userData.email}</p>
+          <img src={profilePictureUrl} alt="Profile Picture" className="profile-image" />
+          <p className="profile-description">{description}</p>
+          <div className="profile-buttons">
+              <button className="profile-button" onClick={handleEditProfile}>Modificar</button>
+              <button className="profile-button" onClick={() => window.location.href = '/Home'}>Home</button>
+          </div>
+        </div>
+      );
+    } else {
+      return null;
+    }
+  };
 
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
@@ -86,16 +105,7 @@ useEffect(() => {
   return (
     <div className="profile-wrapper">
         <h2 className="profile-title">Perfil</h2>
-        {hasProfile && !isEditMode && (
-            <div className="profile-content">
-                <img src={profilePictureUrl} alt="Profile Picture" className="profile-image" />
-                <p className="profile-description">{description}</p>
-                <div className="profile-buttons">
-                    <button className="profile-button" onClick={handleEditProfile}>Modificar</button>
-                    <button className="profile-button" onClick={() => window.location.href = '/Home'}>Home</button>
-                </div>
-            </div>
-        )}
+        {hasProfile && !isEditMode && renderProfile()}
         {!hasProfile && !isEditMode && (
             <div className="profile-content">
                 <h2>¡Personaliza tu perfil!</h2>
@@ -118,7 +128,8 @@ useEffect(() => {
             </div>
         )}
     </div>
-);
+  );
 };
 
 export default Profile;
+

@@ -5,6 +5,7 @@ import "./Home.css";
 
 const Home = () => {
   const [profilePictureUrl, setProfilePictureUrl] = useState('');
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     // Reemplaza la entrada en el historial de navegación para evitar retroceder a la página de inicio de sesión
@@ -12,6 +13,9 @@ const Home = () => {
     
     // Obtener la imagen del perfil al cargar el componente
     fetchProfilePicture();
+
+    // Obtener todos los usuarios al cargar el componente
+    fetchAllUsers();
   }, []);
 
   const fetchProfilePicture = async () => {
@@ -24,7 +28,16 @@ const Home = () => {
       console.error('Error fetching profile picture:', error);
     }
   };
-  
+
+  const fetchAllUsers = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/v1/user/all`);
+      console.log('Users:', response.data); // Imprime los usuarios en la consola
+      setUsers(response.data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
 
   const handleLogout = () => {
     window.location.href = "/loginForm";
@@ -44,6 +57,18 @@ const Home = () => {
         <button className="logout-button" onClick={handleLogout}>
           Cerrar sesión
         </button>
+      </div>
+      <div className="users-container">
+        <table>
+          <tbody>
+            {users.map(user => (
+              <tr key={user.id}>
+                <td>{user.username}</td>
+                <td><img src={user.userProfileDto.profilePictureUrl} alt={user.username} /></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

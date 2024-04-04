@@ -93,6 +93,7 @@
 
 .profile-content {
     text-align: center;
+    margin-bottom: 20px; /* Espacio inferior entre el contenido */
 }
 
 .profile-image {
@@ -106,4 +107,14 @@
     font-size: 16px;
     color: #fff;
     margin-bottom: 20px;
+}
+
+.profile-username {
+    font-size: 24px; /* Tamaño de fuente para el nombre de usuario */
+    font-weight: bold; /* Texto en negrita */
+}
+
+.profile-email {
+    font-size: 18px; /* Tamaño de fuente para el correo electrónico */
+    margin-bottom: 10px; /* Espacio inferior */
 }
