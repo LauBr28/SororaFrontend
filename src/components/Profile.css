@@ -107,3 +107,10 @@
     color: #fff;
     margin-bottom: 20px;
 }
+
+/* Estilos para el nombre de usuario */
+.profile-username {
+    font-size: 24px; /* Tamaño del título */
+    text-align: center; /* Centrar el título */
+    margin-bottom: 20px; /* Espaciado inferior */
+}
