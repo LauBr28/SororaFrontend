@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css'
-import Mapas from "../mapa/Maps.css"; 
+import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import icon from "leaflet/dist/images/marker-icon.png";
-import iconShadow from "leaflet/dist/images/marker-icon.png";
+import './Maps.css'; 
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 let iconUbicacion = new L.icon({
     iconUrl: icon,
@@ -15,18 +15,36 @@ let iconUbicacion = new L.icon({
 });
 
 const Maps = () => {
-    return(
-        <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false} className='mapa'>
+    const [userLocation, setUserLocation] = useState([4.664029951910404, -74.09179687500001]);
+
+    useEffect(() => {
+        const fetchUserLocation = () => {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const { latitude, longitude } = position.coords;
+                    setUserLocation([latitude, longitude]);
+                },
+                error => {
+                    console.error('Error fetching user location:', error);
+                }
+            );
+        };
+
+        fetchUserLocation();
+    }, []);
+
+    return (
+        <MapContainer center={userLocation} zoom={13} scrollWheelZoom={false} className='mapa'>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={[51.505, -0.09]} icon={iconUbicacion}>
+            <Marker position={userLocation} icon={iconUbicacion}>
                 <Popup>
-                    Aqui estas
+                    Aquí estás
                 </Popup>
             </Marker>
         </MapContainer>
-    )
-}
+    );
+};
 
-export default Maps; 
+export default Maps;
