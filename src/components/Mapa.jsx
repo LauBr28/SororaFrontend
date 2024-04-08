@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Mapa.css";
+import Maps from "./mapa/maps";
 
 const Mapa = () => {
   const handleLogout = () => {
@@ -21,7 +22,7 @@ const Mapa = () => {
           Cerrar sesión
         </button>
       </div>
-      <h1>This is the Mapa component</h1>
+      <Maps />
     </div>
   );
 };
