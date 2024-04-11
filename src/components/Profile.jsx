@@ -85,6 +85,11 @@ const Profile = () => {
       console.log(response.data); // Manejar la respuesta según sea necesario
       setHasProfile(true); // Establecer que el usuario ahora tiene perfil después de actualizarlo
       setIsEditMode(false); // Deshabilitar el modo de edición después de actualizar el perfil
+      setUserData(userProfileData);
+
+      setDescription(userProfileData.userProfileDto.description || ''); 
+      setProfilePictureUrl(userProfileData.userProfileDto.profilePictureUrl || '');
+      setHasProfile(!!userProfileData.userProfileDto.description || !!userProfileData.userProfileDto.profilePictureUrl);
     } catch (error) {
       console.error('Error updating profile:', error);
       // Si la actualización falla, se manejará aquí
