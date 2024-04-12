@@ -1,38 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import { List, Image,Button } from 'semantic-ui-react';
 import "./Home.css";
 
 const Home = () => {
-  const [profilePictureUrl, setProfilePictureUrl] = useState('');
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     // Reemplaza la entrada en el historial de navegación para evitar retroceder a la página de inicio de sesión
     window.history.replaceState(null, "", "/home");
-    
-    // Obtener la imagen del perfil al cargar el componente
-    fetchProfilePicture();
-
     // Obtener todos los usuarios al cargar el componente
     fetchAllUsers();
   }, []);
 
-  const fetchProfilePicture = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8080/api/v1/user/profile/picture`);
-      console.log('Response:', response); // Imprime la respuesta en la consola
-      const profilePictureUrl = response.data.profilePictureUrl;
-      setProfilePictureUrl(profilePictureUrl);
-    } catch (error) {
-      console.error('Error fetching profile picture:', error);
-    }
-  };
-
-  
   const fetchAllUsers = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/v1/user/all`);
+      const response = await axios.get("http://localhost:8080/api/v1/user/all");
       console.log('Users:', response.data); // Imprime los usuarios en la consola
       setUsers(response.data);
     } catch (error) {
@@ -44,12 +28,15 @@ const Home = () => {
     window.location.href = "/loginForm";
   };
 
+  const handleConnect = async (friendId) => {
+
+  }
+
   return (
     <div className="home-container">
       <div className="transparent-square"></div>
-      <div className="black-bar">
+      <div className="home-bar">
         <Link to="/profile" className="profile-link">
-          <img src={profilePictureUrl} className="profile-button-image" />
           Go to profile
         </Link>
         <Link to="/mapa" className="map-link">
@@ -59,21 +46,39 @@ const Home = () => {
           Cerrar sesión
         </button>
       </div>
-      <div className="users-container">
-        <table>
-          <tbody>
-            {users.map(user => (
-              <tr key={user.id}>
-                <td>{user.username}</td>
-                <td><img src={user.userProfileDto.profilePictureUrl} alt={user.username} /></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="custom-list">
+        <List divided relaxed >
+          {users.map(user => (
+            <List.Item key={user.id} className="profile-item">
+
+              <List.Content>
+
+                <div class="container-datos">
+                  <div class="left-div">
+                    <Image avatar src={user.userProfileDto.profilePictureUrl} alt={user.username} />
+                  </div>
+                  <div class="right-div">
+                    <List.Header className="fuente">{user.username}</List.Header>
+                    <List.Description className="fuente">{user.userProfileDto.description}</List.Description>
+                    <Button className="connect-button">Conectar</Button>
+                  </div>
+                </div>
+
+                <div>
+                </div>
+              </List.Content>
+            </List.Item>
+          ))}
+        </List>
+
       </div>
+      <div className="Foro">
+        <h1>Foro</h1>
+      </div>
+
+
     </div>
   );
 };
 
 export default Home;
-
