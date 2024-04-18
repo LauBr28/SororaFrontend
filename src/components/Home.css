@@ -118,3 +118,24 @@
 .connect-button:hover {
   background-color: #ff99cc; /* Color rosa claro más oscuro al pasar el mouse */
 }
+
+
+.create-post-button {
+  display: flex;
+  justify-content: flex-end; /* Alinear el contenido al final (derecha) */
+  margin-top: 20px; /* Mover el contenedor hacia abajo */
+}
+
+.create-post-button button {
+  background-color: #ff69b4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.create-post-button button:hover {
+  background-color: #ff1493;
+}
+

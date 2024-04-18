@@ -8,6 +8,7 @@ const Home = () => {
   const [users, setUsers] = useState([]);
   const [loggedInUserId, setLoggedInUserId] = useState(null);
   const [amigas, setAmigas] = useState([]);
+  
 
 
   useEffect(() => {
@@ -77,7 +78,6 @@ const Home = () => {
   };
   
   
-
   const filteredUsers = users.filter(user => user.id !== parseInt(loggedInUserId));
   const amigos = users.filter(user => amigas.some(amiga => amiga.id === user.id));
   const noAmigos = users.filter(user => !amigas.some(amiga => amiga.id === user.id) && user.id !== parseInt(loggedInUserId));
@@ -123,6 +123,11 @@ const Home = () => {
       </div>
       <div className="Foro">
         <h1>Foro</h1>
+        <div className="create-post-button">
+        <Link to="/create-post" className="crear-post-link">
+          <button>Crear Post</button>
+        </Link>
+      </div>
       </div>
     </div>
   );
