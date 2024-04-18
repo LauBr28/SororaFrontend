@@ -1,23 +1,11 @@
 import {  useState } from "react";
 import axios from "axios";
-import fondo1 from '../assets/fondoWeb.png';
 import { GrUserFemale } from "react-icons/gr";
 import { GiHeartKey } from "react-icons/gi";
 import './Register.css';
 import { Link } from 'react-router-dom';
 
 function Register() {
-    const registerStyles = {
-        backgroundImage: `url(${fondo1})`, 
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        height: '100vh', // Ajusta la altura según sea necesario
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: 'white',
-        textAlign: 'center',
-    };
     const [username, setUsername] = useState("");
     const [firstname, setFirstname] = useState("");
     const[lastname, setLastname]= useState("");
@@ -104,10 +92,10 @@ function Register() {
                     <GiHeartKey className="icon" />
                 </div>
                 
-                <button type="submit" class="btn btn-primary " onClick={save} >Save</button>
+                <button type="submit" className="btn btn-primary " onClick={save} >Save</button>
 
                 <div className="register-link">
-                    <p>¿Ya tienes cuenta? <Link to="/loginForm"><a className="chiqui">Login</a></Link></p>
+                    <p>¿Ya tienes cuenta? <Link to="/loginForm" className="chiqui">Login</Link> </p> 
                 </div>
             </form>
 

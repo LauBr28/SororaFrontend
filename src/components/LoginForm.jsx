@@ -21,10 +21,10 @@ const LoginForm = () => {
             }).then((res) => {
                 console.log(res.data);
 
-                if (res.data.message == "Email not exits") {
+                if (res.data.message === "Email not exits") {
                     setShowError(true);
                 }
-                else if (res.data.message == "Login Success") {
+                else if (res.data.message === "Login Success") {
                     console.log( res.data.id);
                     localStorage.setItem('userId', res.data.id);
                     navigate('/home');
@@ -68,19 +68,15 @@ const LoginForm = () => {
                     />
                     <GiHeartKey className="icon" />
                 </div>
-                <div className="remember-forgot">
-                    <label><input type="checkbox" />Remeber me</label>
-                    <a href="#">Forgot password?</a>
-                </div>
                 <button type="submit" class="btn btn-primary " onClick={login} >Login</button>
 
                 <div className="register-link">
-                    <p>Don't have an account? <Link to="/register"><a className="chiqui">Registro</a></Link></p>
+                    <p>¿No tiene una cuenta? <Link to="/register" className="chiqui">Registro</Link></p>
                 </div>
             </form>
             {showError && (
                 <div className="notification">
-                    <p>Incorrect Email and Password not match</p>
+                    <p>Correo o contraseña incorrecta</p>
                     <button onClick={() => setShowError(false)}>Close</button>
                 </div>
             )}

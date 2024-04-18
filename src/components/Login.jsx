@@ -53,49 +53,44 @@ function Login() {
     };
     return (
         <div style={loginStyles}>
-            <div class="container">
-                <div class="row">
+            <div className="container">
+                <div className="row">
                     <h2>Login</h2>
                     <hr />
                 </div>
-                <div class="row">
-                    <div class="col-sm-6">
+                <div className="row">
+                    <div className="col-sm-6">
                         <form>
-                            <div class="form-group">
+                            <div className="form-group">
                                 <label>Email</label>
-                                <input type="email" class="form-control" id="email" placeholder="Enter Name"
-
+                                <input type="email" className="form-control" id="email" placeholder="Enter Name"
                                     value={email}
                                     onChange={(event) => {
                                         setEmail(event.target.value);
                                     }}
-
                                 />
                             </div>
-                            <div class="form-group">
-                                <label>password</label>
-                                <input type="password" class="form-control" id="password" placeholder="Enter Fee"
-
+                            <div className="form-group">
+                                <label>Password</label>
+                                <input type="password" className="form-control" id="password" placeholder="Enter Password"
                                     value={password}
                                     onChange={(event) => {
                                         setPassword(event.target.value);
                                     }}
-
                                 />
                             </div>
-                            <button type="submit" class="btn btn-primary" onClick={login} >Login</button>
-                        </form>             
+                            <button type="submit" className="btn btn-primary" onClick={login}>Login</button>
+                        </form>
                     </div>
                 </div>
-                {(showError && !showNotification) && ( // Mostrar el mensaje de error solo si no se muestra la notificación de email no existente
-                <div className="notification">
-                    <p>Incorrect Email and Password not match</p>
-                    <button onClick={() => setShowError(false)}>Close</button>
-                </div>
-            )}
+                {(showError && !showNotification) && (
+                    <div className="notification">
+                        <p>Incorrect Email and Password not match</p>
+                        <button onClick={() => setShowError(false)}>Close</button>
+                    </div>
+                )}
             </div>
         </div>
-
        
     );    
 }

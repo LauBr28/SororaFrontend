@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom'; // Importa Link de react-router-dom;
-import fondoWeb from '../assets/fondoWeb.png';
 import './Inicio.css';
 
 const Inicio = () => {
@@ -29,7 +28,7 @@ const Inicio = () => {
                 <Link to="/register"><button>Registro</button></Link>
                 <Link to="/loginForm"><button>Iniciar sesión</button></Link>
             </footer>
-            <p class="texto-pequeno">"De ellas y para ellas"</p>
+            <p className="texto-pequeno">"De ellas y para ellas"</p>
 
         </div>
 

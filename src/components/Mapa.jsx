@@ -13,10 +13,10 @@ const Mapa = () => {
       <div className="transparent-square"></div>
       <div className="black-bar">
         <Link to="/profile" className="profile-link">
-          Go to profile
+          Ir al perfil
         </Link>
-        <Link to="/mapa" className="map-link">
-          Mapa
+        <Link to="/home" className="home-link">
+          Home
         </Link>
         <button className="logout-button" onClick={handleLogout}>
           Cerrar sesión
