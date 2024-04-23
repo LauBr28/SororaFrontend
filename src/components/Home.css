@@ -1,0 +1,167 @@
+.home-container {
+    display: flex;
+    justify-content: flex-start; /* Alinea los elementos al principio (izquierda) */
+    align-items: flex-start; /* Alinea los elementos arriba */
+    width: 100vw;
+    height: 100vh;
+    padding-bottom: 60px;
+    background-color: white;
+    overflow: hidden;
+  }
+  
+  .custom-list .image {
+    width: 100px; /* Ajusta el tamaño de las imágenes según tu preferencia */
+    height: 100px;
+    border-radius: 50%; /* Hace que la imagen sea circular */
+    overflow: hidden; /* Oculta cualquier parte de la imagen que se salga del radio circular */
+  }
+  
+  .custom-list .profile-item {
+    margin-bottom: 20px; /* Espacio entre cada perfil */
+  }
+  
+  .container-datos {
+    width: 100%;
+  }
+  
+  .left-div  {
+    display: inline-block;
+    width: 30%;
+    vertical-align: top; /* Alinear arriba si el contenido no es del mismo tamaño */
+  }
+  .right-div{
+    display: inline-block;
+    width: 70%;
+    vertical-align: top; 
+  }
+  .user-fuente {
+    color: #000000; /* Color de texto negro */
+    font-weight: bold; /* Negrita */
+    font-size: 25px;
+  }
+  .descrip-fuente {
+    color: #000000; /* Color de texto negro */
+    font-weight: bold; /* Negrita */
+    font-size: 17px;
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+  
+  .home.body{
+    background-color: #ffff;
+  }
+  
+  .custom-list {
+    background-color: #f5f5f5; /* Color perla */
+    padding: 10px;
+    width: 25%;
+    height: 100%;
+    overflow-y: auto; /* Añade scroll solo al área de custom-list */
+    margin-top: 55px;
+  
+    /* Estilos del borde y la sombra */
+    border: 5px solid #fc57a9; /* Borde sólido de 3px de color rosado */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0px 0px 20px rgba(197, 9, 103, 0.5); /* Sombra rosada más pronunciada */
+  }
+  
+  .h3-home{
+    font-family: "Honk", system-ui;
+    text-align: center;
+      font-weight: bold;
+      margin-bottom: 30px;
+      font-size: 54px;
+  }
+  
+  .Foro {
+    background-color: white;
+    color: white;
+    padding: 10px;
+    width: 73%;
+    height: 100%;
+    margin-top: 53px;
+    margin-left: 22px;
+  }
+  
+  .Foro h1 {
+    color: white; /* Color del texto del título */
+    font-size: 24px; /* Tamaño de fuente del título */
+    text-align: center; /* Alineación del texto del título (centrado) */
+  }
+  
+  .home-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: #ffb6fa;
+  
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    z-index: 1;
+    border: 5px solid #ffb6fa; /* Borde sólido de 3px de color rosado */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0px 0px 10px rgba(235, 183, 47, 0.5); /* Sombra amarilla con opacidad */
+  
+  
+  }
+  
+  
+  .profile-button-image {
+    width: 30px; /* Ajusta el tamaño de la imagen */
+    height: 30px; /* Ajusta el tamaño de la imagen */
+    border-radius: 50%; /* Para hacer la imagen circular */
+    margin-right: 10px; /* Espacio entre la imagen y el texto */
+  }
+  
+  
+  .profile-link, .map-link, .logout-button {
+    margin-right: 20px;
+    padding: 10px 20px;
+    background-color: #FF69B4; /* Cambiado a color rosa */
+    color: white; /* Texto en blanco */
+    border-radius: 20px;
+    border: none; /* Sin borde */
+    cursor: pointer; /* Cambiado a cursor de puntero */
+    
+    
+  }
+  
+  .profile-link:hover, .map-link:hover, .logout-button:hover {
+    text-decoration: underline;
+  }
+  .connect-button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #ffcccc; /* Color rosa claro */
+    color: white;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .connect-button:hover {
+    background-color: #ff99cc; /* Color rosa claro más oscuro al pasar el mouse */
+  }
+  
+  .create-post-button {
+    display: flex;
+    justify-content: flex-end; /* Alinear el contenido al final (derecha) */
+    margin-top: 20px; /* Mover el contenedor hacia abajo */
+  }
+  
+  .create-post-button button {
+    background-color: #ff69b4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .create-post-button button:hover {
+    background-color: #ff1493;
+  }

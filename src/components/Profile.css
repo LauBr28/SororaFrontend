@@ -1,0 +1,109 @@
+/* Profile.css */
+.profile-container {
+    display: flex;
+    justify-content: center; /* Alinea los elementos al principio (izquierda) */
+    align-items: center; /* Alinea los elementos arriba */
+    width: 100vw;
+    height: 100vh;
+    padding-bottom: 60px;
+    background-color: pink;
+    overflow: hidden;
+  }
+.profile-wrapper {
+    width: 600px; /* Aumentar el tamaño del cuadrado transparente */
+    min-height: 600px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    color: aliceblue;
+    border-radius: 10px;
+    padding: 30px 40px;
+    display: flex; /* Para alinear el contenido */
+    flex-direction: column; /* Apilar elementos verticalmente */
+    align-items: center; /* Centrar horizontalmente */
+}
+
+.profile-wrapper h2 {
+    font-size: 36px;
+    text-align: center;
+    margin-top: 0; /* Eliminar el margen superior */
+    margin-bottom: 30px; /* Espaciado adicional debajo del título */
+}
+
+.profile-content {
+    text-align: center;
+    margin-bottom: 20px; /* Espacio inferior entre el contenido */
+}
+
+.profile-username {
+    font-size: 24px; /* Tamaño de fuente para el nombre de usuario */
+    font-weight: bold; /* Texto en negrita */
+}
+
+.profile-email {
+    font-size: 18px; /* Tamaño de fuente para el correo electrónico */
+    margin-bottom: 10px; /* Espacio inferior */
+}
+
+.profile-image {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.profile-description {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.profile-input-description,
+.profile-input-url {
+    width: 100%; /* Ancho completo para los campos de entrada */
+    height: 50px; /* Altura de los campos de entrada */
+    margin: 10px auto; /* Margen */
+    padding: 15px; /* Relleno */
+    border: 2px solid rgba(255, 255, 255, .2); /* Borde */
+    border-radius: 10px; /* Radio del borde */
+    font-size: 16px; /* Tamaño de fuente */
+    color: #fff; /* Color del texto */
+    background: transparent; /* Fondo transparente */
+    outline: none; /* Eliminar el contorno */
+}
+
+.profile-input-label {
+    text-align: left; /* Alinear el texto a la izquierda */
+    margin-bottom: 10px; /* Espacio inferior */
+    color: #fff; /* Color del texto */
+    font-weight: bold; /* Texto en negrita */
+}
+
+.profile-buttons {
+    display: flex; /* Para alinear los botones horizontalmente */
+    justify-content: center; /* Centrar los botones horizontalmente */
+}
+
+.profile-button {
+    width: 150px; /* Ancho fijo del botón */
+    height: 45px; /* Altura del botón */
+    background-color: #fff; /* Color de fondo */
+    border: none; /* Sin borde */
+    outline: none; /* Sin contorno */
+    border-radius: 40px; /* Radio del borde */
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1); /* Sombra */
+    cursor: pointer; /* Cursor al pasar por encima */
+    font-size: 16px; /* Tamaño de fuente */
+    color: #333; /* Color del texto */
+    font-weight: 700; /* Peso de la fuente */
+    margin: 0 10px; /* Margen entre los botones */
+}
+
+.profile-button:last-child {
+    margin-right: 0; /* Eliminar el margen derecho del último botón */
+}
+
+.profile-button:hover {
+    transform: scale(1.1); /* Escalar al pasar por encima */
+}
