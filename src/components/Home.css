@@ -29,15 +29,30 @@
   width: 30%;
   vertical-align: top; /* Alinear arriba si el contenido no es del mismo tamaño */
 }
+
+/* Estilos para la imagen del avatar */
+.left-div img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
 .right-div{
   display: inline-block;
   width: 70%;
   vertical-align: top; 
 }
-.fuente{
-  color: #fff;
-  font-family: 'Roboto', sans-serif;
+.user-fuente {
+  color: #000000; /* Color de texto negro */
   font-weight: bold; /* Negrita */
+  font-size: 25px;
+}
+.descrip-fuente {
+  color: #000000; /* Color de texto negro */
+  font-weight: bold; /* Negrita */
+  font-size: 17px;
+  margin-top: 0;
+  margin-bottom: 8px;
 }
 
 .home.body{
@@ -45,21 +60,33 @@
 }
 
 .custom-list {
-  background-color: #fc57a9;
+  background-color: #f5f5f5;
   padding: 10px;
-  width: 25%;
+  width: 40%; /* Aumentar el ancho de custom-list */
   height: 100%;
-  overflow-y: auto; /* Añade scroll solo al área de custom-list */
-  margin-top: 50px;
+  overflow-y: auto;
+  margin-top: 55px;
+  border: 5px solid #fc57a9;
+  border-radius: 8px;
+  box-shadow: 0px 0px 20px rgba(197, 9, 103, 0.5);
+}
+
+.h3-home{
+  font-family: "Honk", system-ui;
+  text-align: center;
+    font-weight: bold;
+    margin-bottom: 30px;
+    font-size: 54px;
 }
 
 .Foro {
-  background-color: #ffcccc;
+  background-color: white;
   color: white;
-  width: 75%;
   padding: 10px;
-  margin-top: 50px; /* Espacio superior entre el contenido anterior y el foro */
-
+  width: 73%;
+  height: 100%;
+  margin-top: 53px;
+  margin-left: 22px;
 }
 
 .Foro h1 {
@@ -74,11 +101,17 @@
   left: 0;
   width: 100%;
   height: 50px;
-  background-color: #070002;
+  background-color: #ffb6fa;
+
   display: flex;
   align-items: center;
   justify-content: flex-end;
   z-index: 1;
+  border: 5px solid #ffb6fa; /* Borde sólido de 3px de color rosado */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0px 0px 10px rgba(235, 183, 47, 0.5); /* Sombra amarilla con opacidad */
+
+
 }
 
 
@@ -97,8 +130,9 @@
   color: white; /* Texto en blanco */
   border-radius: 20px;
   border: none; /* Sin borde */
-  text-decoration: none;
   cursor: pointer; /* Cambiado a cursor de puntero */
+  
+  
 }
 
 .profile-link:hover, .map-link:hover, .logout-button:hover {
@@ -119,7 +153,6 @@
   background-color: #ff99cc; /* Color rosa claro más oscuro al pasar el mouse */
 }
 
-
 .create-post-button {
   display: flex;
   justify-content: flex-end; /* Alinear el contenido al final (derecha) */
@@ -137,5 +170,196 @@
 
 .create-post-button button:hover {
   background-color: #ff1493;
+}
+
+/* Estilos para el contenedor de cada post */
+.post-container {
+  position: relative; /* Hacer que los elementos internos se posicionen relativos a este contenedor */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+}
+
+/* Estilos para el título del post */
+.post-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Estilos para la información del post */
+.post-info {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Estilos para la lista de comentarios */
+.comments-list {
+  margin-top: 10px;
+  padding-left: 20px;
+}
+
+/* Estilos para cada comentario */
+.comment-item {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+.foro-container {
+  color: white; /* Texto en blanco */
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 53px;
+}
+
+.foro-container h1 {
+  font-size: 36px; /* Tamaño más grande para el título */
+  text-align: center;
+  margin-bottom: 20px;
+  background-color: #ff69b4; /* Color de fondo rosa */
+  padding: 10px;
+  border-radius: 8px;
+}
+
+
+/* Estilos para el botón de crear post */
+.crear-post-button {
+  background-color: #ff69b4; /* Color de fondo rosa */
+  color: #fff; /* Color de texto blanco */
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.crear-post-button:hover {
+  background-color: #ff1493; /* Color de fondo rosa más oscuro al pasar el mouse */
+}
+
+/* Estilos para el contenedor de cada post */
+.post-container {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9; /* Color de fondo gris claro */
+  .comments-button,
+  .like-button {
+    margin-right: 10px;
+    padding: 5px 10px;
+    background-color: #dc9ebd;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .comments-button:hover,
+  .like-button:hover {
+    background-color: #efdde6;
+  }
+
+  .like-count {
+    font-size: 14px;
+    margin-left: 5px;
+  }
+
+}
+
+/* Estilos para el título del post */
+.post-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Estilos para el contenido del post */
+.post-content {
+  font-size: 14px;
+  color: #666; /* Color de texto gris */
+}
+
+/* Estilos para la información adicional del post */
+.post-info {
+  font-size: 14px;
+  color: #666; /* Color de texto gris */
+}
+
+/* Estilos para la lista de comentarios */
+.comments-list {
+  margin-top: 10px;
+  padding-left: 20px;
+}
+
+/* Estilos para cada comentario */
+.comment-item {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+/* Estilos para la barra superior */
+.home-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #ffb6fa; /* Color de fondo rosa claro */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  z-index: 1;
+  border: 5px solid #ffb6fa; /* Borde de color rosa */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(235, 183, 47, 0.5); /* Sombra amarilla */
+}
+
+.post-username{
+  color: #0c0c0c;
+}
+/* Estilos para los enlaces en la barra superior */
+.profile-link,
+.map-link,
+.logout-button {
+  margin-right: 20px;
+  padding: 10px 20px;
+  background-color: #ff69b4; /* Color de fondo rosa */
+  color: #fff; /* Color de texto blanco */
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Estilos para los enlaces en la barra superior al pasar el mouse */
+.profile-link:hover,
+.map-link:hover,
+.logout-button:hover {
+  text-decoration: underline; /* Subrayar al pasar el mouse */
+}
+
+/* Estilos para el botón de comentarios en cada post */
+.comment-button {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #de7ed8; /* Color azul */
+  color: #fff; /* Texto en blanco */
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  text-decoration: none; /* Eliminar subrayado del texto */
+  transition: background-color 0.3s ease; /* Transición suave para el cambio de color de fondo */
+}
+
+.comment-button:hover {
+  background-color: #090c10; /* Color azul más oscuro al pasar el mouse */
+}
+
+/* Estilos para la cantidad de comentarios al lado del botón */
+.comment-count {
+  margin-left: 8px; /* Espacio a la izquierda del número de comentarios */
+  color: #666; /* Color de texto gris */
+  font-size: 14px; /* Tamaño de fuente */
 }
 

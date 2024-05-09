@@ -1,5 +1,14 @@
 /* Profile.css */
-
+.profile-container {
+    display: flex;
+    justify-content: center; /* Alinea los elementos al principio (izquierda) */
+    align-items: center; /* Alinea los elementos arriba */
+    width: 100vw;
+    height: 100vh;
+    padding-bottom: 60px;
+    background-color: pink;
+    overflow: hidden;
+  }
 .profile-wrapper {
     width: 600px; /* Aumentar el tamaño del cuadrado transparente */
     min-height: 600px;

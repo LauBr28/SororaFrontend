@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Profile.css'; 
+import './Profile.css';
 
 const Profile = () => {
   const [userData, setUserData] = useState(null); // Estado para almacenar los datos del usuario
@@ -14,7 +14,7 @@ const Profile = () => {
     // Obtener el userId del localStorage al cargar el componente
     const userIdFromLocalStorage = localStorage.getItem('userId');
     if (userIdFromLocalStorage) {
-        setUserId(userIdFromLocalStorage);
+      setUserId(userIdFromLocalStorage);
     }
   }, []);
 
@@ -24,38 +24,41 @@ const Profile = () => {
       fetchUserProfile();
     }
   }, [userId]);
-  
+
   const fetchUserProfile = async () => {
     try {
       const response = await axios.get(`http://localhost:8080/api/v1/user/profile?userId=${userId}`);
       const userProfileData = response.data;
-      
+
       // Guardar la información del usuario y del perfil en el estado userData
-      setUserData(userProfileData); 
+      setUserData(userProfileData);
 
       // Acceder a userProfileDto en lugar de userProfileData directamente
-      setDescription(userProfileData.userProfileDto.description || ''); 
+      setDescription(userProfileData.userProfileDto.description || '');
       setProfilePictureUrl(userProfileData.userProfileDto.profilePictureUrl || '');
       setHasProfile(!!userProfileData.userProfileDto.description || !!userProfileData.userProfileDto.profilePictureUrl);
     } catch (error) {
       console.error('Error fetching user profile:', error);
     }
   };
-  
+
   // Renderizar los datos del usuario y del perfil si están disponibles
   const renderProfile = () => {
     if (userData) {
       return (
+      <div className='Profile-container'>
         <div className="profile-content">
           <h2 className="profile-username">{userData.username}</h2>
           <p className="profile-email">{userData.email}</p>
           <img src={profilePictureUrl} alt="Profile Picture" className="profile-image" />
           <p className="profile-description">{description}</p>
           <div className="profile-buttons">
-              <button className="profile-button" onClick={handleEditProfile}>Modificar</button>
-              <button className="profile-button" onClick={() => window.location.href = '/Home'}>Home</button>
+            <button className="profile-button" onClick={handleEditProfile}>Modificar</button>
+            <button className="profile-button" onClick={() => window.location.href = '/Home'}>Home</button>
           </div>
         </div>
+      </div>
+        
       );
     } else {
       return null;
@@ -87,7 +90,7 @@ const Profile = () => {
       setIsEditMode(false); // Deshabilitar el modo de edición después de actualizar el perfil
       setUserData(userProfileData);
 
-      setDescription(userProfileData.userProfileDto.description || ''); 
+      setDescription(userProfileData.userProfileDto.description || '');
       setProfilePictureUrl(userProfileData.userProfileDto.profilePictureUrl || '');
       setHasProfile(!!userProfileData.userProfileDto.description || !!userProfileData.userProfileDto.profilePictureUrl);
     } catch (error) {
@@ -109,29 +112,29 @@ const Profile = () => {
 
   return (
     <div className="profile-wrapper">
-        <h2 className="profile-title">Perfil</h2>
-        {hasProfile && !isEditMode && renderProfile()}
-        {!hasProfile && !isEditMode && (
-            <div className="profile-content">
-                <h2>¡Personaliza tu perfil!</h2>
-                <p>Cuentanos algo sobre ti y elige una imagen para tu perfil.</p>
-                <button className="profile-button" onClick={() => setIsEditMode(true)}>Personalizar</button>
-            </div>
-        )}
-        {isEditMode && (
-            <div className="profile-content">
-                <h2>Actualiza tú perfil</h2>
-                <label className="profile-input-label">Descripción:</label>
-                <input className="profile-input-description" type="text" value={description} onChange={handleDescriptionChange} />
-                <label className="profile-input-label">URL de la foto de perfil:</label>
-                <input className="profile-input-url" type="text" value={profilePictureUrl} onChange={handleProfilePictureUrlChange} />
-                <div className="profile-buttons">
-                    <button className="profile-button" onClick={handleUpdateProfile}>Guardar</button>
-                    <button className="profile-button" onClick={() => setIsEditMode(false)}>Cancelar</button>
-                    <button className="profile-button" onClick={() => window.location.href = '/Home'}>Home</button>
-                </div>
-            </div>
-        )}
+      <h2 className="profile-title">Perfil</h2>
+      {hasProfile && !isEditMode && renderProfile()}
+      {!hasProfile && !isEditMode && (
+        <div className="profile-content">
+          <h2>¡Personaliza tu perfil!</h2>
+          <p>Cuentanos algo sobre ti y elige una imagen para tu perfil.</p>
+          <button className="profile-button" onClick={() => setIsEditMode(true)}>Personalizar</button>
+        </div>
+      )}
+      {isEditMode && (
+        <div className="profile-content">
+          <h2>Actualiza tú perfil</h2>
+          <label className="profile-input-label">Descripción:</label>
+          <input className="profile-input-description" type="text" value={description} onChange={handleDescriptionChange} />
+          <label className="profile-input-label">URL de la foto de perfil:</label>
+          <input className="profile-input-url" type="text" value={profilePictureUrl} onChange={handleProfilePictureUrlChange} />
+          <div className="profile-buttons">
+            <button className="profile-button" onClick={handleUpdateProfile}>Guardar</button>
+            <button className="profile-button" onClick={() => setIsEditMode(false)}>Cancelar</button>
+            <button className="profile-button" onClick={() => window.location.href = '/Home'}>Home</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
