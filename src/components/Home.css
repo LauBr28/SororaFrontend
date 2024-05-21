@@ -363,3 +363,8 @@
   font-size: 14px; /* Tamaño de fuente */
 }
 
+.posts-list {
+  max-height: 60vh; /* Altura máxima del contenedor */
+  overflow-y: auto; /* Permitir el desplazamiento vertical si los posts exceden la altura máxima */
+  margin-bottom: 20px; /* Agrega un margen inferior para evitar que se superpongan otros elementos */
+}
