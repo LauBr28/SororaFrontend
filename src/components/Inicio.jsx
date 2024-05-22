@@ -37,4 +37,3 @@ const Inicio = () => {
 };
 
 export default Inicio; // Exporta el componente 'Inicio' como default
-

@@ -6,6 +6,7 @@ import Inicio from './components/Inicio';
 import Home from './components/Home';
 import Profile from './components/Profile';
 import Mapa from './components/Mapa';
+import CrearPost from './components/CrearPost';
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
           <Route path="/home" element={<Home/>} />
           <Route path="/profile" element={<Profile/>} />
           <Route path="/mapa" element={<Mapa/>}/>
+          <Route path="/crearPost" element={<CrearPost/>} />
+        
         </Routes>
       </BrowserRouter>
 
