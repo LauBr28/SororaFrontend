@@ -368,3 +368,19 @@
   overflow-y: auto; /* Permitir el desplazamiento vertical si los posts exceden la altura máxima */
   margin-bottom: 20px; /* Agrega un margen inferior para evitar que se superpongan otros elementos */
 }
+
+.delete-button {
+  position: absolute; /* Posiciona el botón de eliminar de forma absoluta */
+  bottom: 10px; /* Ajusta la distancia desde la parte inferior */
+  left: 1390px; /* Ajusta la distancia desde la parte izquierda */
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #cc0000;
+}

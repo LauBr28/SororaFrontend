@@ -23,6 +23,7 @@ const Home = () => {
     likedByUser: false,  // Nuevo estado para indicar si el usuario ha dado like
     commentCount: 0
   };
+
   useEffect(() => {
     // Reemplaza la entrada en el historial de navegación para evitar retroceder a la página de inicio de sesión
     window.history.replaceState(null, "", "/home");
@@ -97,35 +98,45 @@ const Home = () => {
   };
 
 
-const handleLike = async (postId) => {
-  try {
-    if (!likedPosts.includes(postId)) {
-      // Enviar solicitud de like al servidor
-      await axios.post(`http://localhost:8080/api/v1/user/post/like/${postId}`);
-      // Actualizar el estado local para reflejar que el usuario ha dado like al post
-      const updatedPosts = posts.map((p) => {
-        if (p.postId === postId) {
-          return { ...p, likes: p.likes + 1, likedByUser: true };
-        }
-        return p;
-      });
-      // Actualizar el estado de likedPosts
-      setLikedPosts([...likedPosts, postId]);
-      // Actualizar el estado de los posts
-      setPosts(updatedPosts);
+  const handleLike = async (postId) => {
+    try {
+      if (!likedPosts.includes(postId)) {
+        // Enviar solicitud de like al servidor
+        await axios.post(`http://localhost:8080/api/v1/user/post/like/${postId}`);
+        // Actualizar el estado local para reflejar que el usuario ha dado like al post
+        const updatedPosts = posts.map((p) => {
+          if (p.postId === postId) {
+            return { ...p, likes: p.likes + 1, likedByUser: true };
+          }
+          return p;
+        });
+        // Actualizar el estado de likedPosts
+        setLikedPosts([...likedPosts, postId]);
+        // Actualizar el estado de los posts
+        setPosts(updatedPosts);
+      }
+    } catch (error) {
+      console.error('Error dando like:', error);
+      // Manejar cualquier error de conexión o procesamiento de datos
     }
+  };
+
+const handleDelete = async (postId) => {
+  try {
+    await axios.delete(`http://localhost:8080/api/v1/user/post/delete/${postId}`);
+    setPosts(posts.filter(post => post.postId !== postId));
   } catch (error) {
-    console.error('Error dando like:', error);
-    // Manejar cualquier error de conexión o procesamiento de datos
+    console.error('Error eliminando el post:', error);
   }
 };
+
 
 
   const filteredUsers = users.filter(user => user.id !== parseInt(loggedInUserId));
   const amigos = users.filter(user => amigas.some(amiga => amiga.id === user.id));
   const noAmigos = users.filter(user => !amigas.some(amiga => amiga.id === user.id) && user.id !== parseInt(loggedInUserId));
   const combinedList = [...amigos, ...noAmigos];
-
+  
   return (
     <div className="home-container">
       <div className="home-bar">
@@ -159,10 +170,11 @@ const handleLike = async (postId) => {
           ))}
         </List>
       </div>
+  
       <div className="foro-container">
-      <div className="foro-header">
-        <h1>Foro</h1>
-      </div>
+        <div className="foro-header">
+          <h1>Foro</h1>
+        </div>
         <Link to="/crearPost" className="crear-post-link">
           <button className="crear-post-button">Crear Post</button>
         </Link>
@@ -180,13 +192,10 @@ const handleLike = async (postId) => {
                     <h4 className="post-title">{post.title}</h4>
                     <p>{post.content}</p>
                     <div className="post-actions">
-                     {/* Botón de Comentarios y cantidad */}
                       <Link to={`/post/${post.postId}`} className="comment-button">
                         Comentarios
                       </Link>
                       <span className="comment-count">{post.commentCount}</span>
-                                            
-                      {/* Botón de Likes (corazón) */}
                       <button
                         className="like-button"
                         onClick={() => handleLike(post.postId)}
@@ -194,8 +203,20 @@ const handleLike = async (postId) => {
                       >
                         ❤️
                       </button>
-                      <span className="like-count">{post.likes}</span> {/* Mostrar cantidad de likes */}
-     
+                      <span className="like-count">{post.likes}</span>
+                      {post.userId === parseInt(loggedInUserId) && (
+                        <div>
+                          <Link to={`/editarPost/${post.postId}`} className="editar-post-link">
+                            <button className="editar-post-button">Editar</button>
+                          </Link>
+                          <button
+                            className="delete-button"
+                            onClick={() => handleDelete(post.postId)}
+                          >
+                            Eliminar
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -208,8 +229,6 @@ const handleLike = async (postId) => {
       </div>
     </div>
   );
-  
 };
-
 
 export default Home;
