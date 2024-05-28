@@ -372,7 +372,7 @@
 .delete-button {
   position: absolute; /* Posiciona el botón de eliminar de forma absoluta */
   bottom: 10px; /* Ajusta la distancia desde la parte inferior */
-  left: 1390px; /* Ajusta la distancia desde la parte izquierda */
+  left: 1190px; /* Ajusta la distancia desde la parte izquierda */
   background-color: #ff4444;
   color: white;
   border: none;

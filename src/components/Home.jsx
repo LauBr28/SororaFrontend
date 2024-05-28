@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import { List, Image, Button } from 'semantic-ui-react';
+import { List, Image, Button, Modal } from 'semantic-ui-react'; // Agrega Modal aquí
+import CrearPost from './CrearPost'; // Importa el componente CrearPost aquí
+import CrearComentario from './CrearComentario';
 import "./Home.css";
-
-
 
 const Home = () => {
   const [users, setUsers] = useState([]);
@@ -12,27 +12,16 @@ const Home = () => {
   const [amigas, setAmigas] = useState([]);
   const [posts, setPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
-
-  // Modificar la estructura de cada post para incluir likes y estado de like
-  const initialPostState = {
-    postId: null,
-    username: "",
-    title: "",
-    content: "",
-    likes: 0,
-    likedByUser: false,  // Nuevo estado para indicar si el usuario ha dado like
-    commentCount: 0
-  };
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState(null);
+  const [comments, setComments] = useState({});
 
   useEffect(() => {
-    // Reemplaza la entrada en el historial de navegación para evitar retroceder a la página de inicio de sesión
     window.history.replaceState(null, "", "/home");
-    // Obtener todos los usuarios al cargar el componente
     fetchAllUsers();
     const userIdFromLocalStorage = localStorage.getItem('userId');
     if (userIdFromLocalStorage) {
       setLoggedInUserId(userIdFromLocalStorage);
-      // Cargar los posts del usuario al iniciar sesión
       fetchAmigas(userIdFromLocalStorage);
       fetchAllPosts();
     }
@@ -41,27 +30,20 @@ const Home = () => {
   const fetchAllPosts = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/v1/user/posts/all");
-      console.log('Posts:', response.data); // Imprimir los posts en la consola
-  
-      // Actualizar el estado de los posts con la cantidad de comentarios
       const updatedPosts = response.data.map(post => ({
         ...post,
         username: post.username,
         commentCount: post.comments ? post.comments.length : 0
       }));
-  
       setPosts(updatedPosts);
     } catch (error) {
       console.error('Error fetching posts:', error);
     }
   };
-  
-
 
   const fetchAllUsers = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/v1/user/all");
-      console.log('Users:', response.data); // Imprime los usuarios en la consola
       setUsers(response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -71,72 +53,89 @@ const Home = () => {
   const fetchAmigas = async (userId) => {
     try {
       const response = await axios.get(`http://localhost:8080/api/v1/user/friends?userId=${userId}`);
-      console.log('Amigas:', response.data);
       setAmigas(response.data);
     } catch (error) {
       console.error('Error fetching amigas:', error);
+    }
+  };
+  const fetchCommentsForPost = async (postId) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/v1/user/post/${postId}/comments`);
+      console.log('Comments for post:', response.data);
+
+      // Actualiza la lista de comentarios para el post específico
+      const updatedPosts = posts.map(p => {
+        if (p.postId === postId) {
+          return { ...p, comments: response.data };
+        }
+        return p;
+      });
+      setPosts(updatedPosts);
+    } catch (error) {
+      console.error('Error fetching comments for post:', error);
     }
   };
 
 
   const handleConnect = async (friendId) => {
     try {
-      // Realizar la solicitud POST para conectar usuarios como amigos
       await axios.post(`http://localhost:8080/api/v1/user/connect/${loggedInUserId}/${friendId}`);
-  
-      // Después de la conexión exitosa, obtener la lista actualizada de amigas
       fetchAmigas(loggedInUserId);
     } catch (error) {
       console.error('Error connecting with user:', error);
-      // Manejar cualquier error de conexión o procesamiento de datos
     }
   };
-
 
   const handleLogout = () => {
     window.location.href = "/loginForm";
   };
 
-
   const handleLike = async (postId) => {
     try {
       if (!likedPosts.includes(postId)) {
-        // Enviar solicitud de like al servidor
         await axios.post(`http://localhost:8080/api/v1/user/post/like/${postId}`);
-        // Actualizar el estado local para reflejar que el usuario ha dado like al post
         const updatedPosts = posts.map((p) => {
           if (p.postId === postId) {
             return { ...p, likes: p.likes + 1, likedByUser: true };
           }
           return p;
         });
-        // Actualizar el estado de likedPosts
         setLikedPosts([...likedPosts, postId]);
-        // Actualizar el estado de los posts
         setPosts(updatedPosts);
       }
     } catch (error) {
       console.error('Error dando like:', error);
-      // Manejar cualquier error de conexión o procesamiento de datos
     }
   };
 
-const handleDelete = async (postId) => {
-  try {
-    await axios.delete(`http://localhost:8080/api/v1/user/post/delete/${postId}`);
-    setPosts(posts.filter(post => post.postId !== postId));
-  } catch (error) {
-    console.error('Error eliminando el post:', error);
-  }
-};
+  const handleDelete = async (postId) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/v1/user/post/delete/${postId}`);
+      setPosts(posts.filter(post => post.postId !== postId));
+    } catch (error) {
+      console.error('Error eliminando el post:', error);
+    }
+  };
 
+  const handlePostCreated = (newPost) => {
+    setPosts([...posts, newPost]);
+  };
 
+  const handleOpenCommentModal = (postId) => {
+    setSelectedPostId(postId);
+    setShowCommentModal(true);
+  };
+
+  const handleCloseCommentModal = () => {
+    setShowCommentModal(false);
+    setSelectedPostId(null);
+  };
 
   const filteredUsers = users.filter(user => user.id !== parseInt(loggedInUserId));
   const amigos = users.filter(user => amigas.some(amiga => amiga.id === user.id));
   const noAmigos = users.filter(user => !amigas.some(amiga => amiga.id === user.id) && user.id !== parseInt(loggedInUserId));
   const combinedList = [...amigos, ...noAmigos];
-  
+
   return (
     <div className="home-container">
       <div className="home-bar">
@@ -144,7 +143,7 @@ const handleDelete = async (postId) => {
         <Link to="/mapa" className="map-link">Mapa</Link>
         <button className="logout-button" onClick={handleLogout}>Cerrar sesión</button>
       </div>
-  
+
       <div className="custom-list">
         <h3 className="h3-home">SisterHood</h3>
         <List divided relaxed>
@@ -170,7 +169,7 @@ const handleDelete = async (postId) => {
           ))}
         </List>
       </div>
-  
+
       <div className="foro-container">
         <div className="foro-header">
           <h1>Foro</h1>
@@ -178,7 +177,7 @@ const handleDelete = async (postId) => {
         <Link to="/crearPost" className="crear-post-link">
           <button className="crear-post-button">Crear Post</button>
         </Link>
-  
+
         <div className="posts-list">
           <h3 className="post-section-title">Últimos Posts</h3>
           {posts.length > 0 ? (
@@ -192,9 +191,9 @@ const handleDelete = async (postId) => {
                     <h4 className="post-title">{post.title}</h4>
                     <p>{post.content}</p>
                     <div className="post-actions">
-                      <Link to={`/post/${post.postId}`} className="comment-button">
-                        Comentarios
-                      </Link>
+                      <button className="comment-button" onClick={() => handleOpenCommentModal(post.postId)}>
+                        Comentar
+                      </button>
                       <span className="comment-count">{post.commentCount}</span>
                       <button
                         className="like-button"
@@ -218,6 +217,16 @@ const handleDelete = async (postId) => {
                         </div>
                       )}
                     </div>
+                    {post.comments && (
+                      <div className="comments-section">
+                        <h5>Comentarios</h5>
+                        {post.comments.map(comment => (
+                          <div key={comment.commentId} className="comment-container">
+                            <p>{comment.content}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -226,9 +235,18 @@ const handleDelete = async (postId) => {
             <p>No hay posts disponibles.</p>
           )}
         </div>
+
       </div>
+      <CrearPost parentId={selectedPostId} onPostCreated={handlePostCreated} />
+      <Modal open={showCommentModal} onClose={handleCloseCommentModal}>
+        <Modal.Header>Crear Comentario</Modal.Header>
+        <Modal.Content>
+          <CrearComentario postId={selectedPostId} onCommentCreated={fetchCommentsForPost} />
+        </Modal.Content>
+      </Modal>
     </div>
   );
 };
 
 export default Home;
+

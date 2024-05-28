@@ -1,3 +1,27 @@
+.comments-section {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f0f0f0; /* Color de fondo para la sección de comentarios */
+    border-radius: 5px;
+  }
+  
+  .comments-list {
+    padding-left: 20px;
+  }
+  
+  .comment-item {
+    margin-bottom: 10px; /* Espacio entre comentarios */
+    padding: 5px; /* Espaciado interno */
+    background-color: #e0e0e0; /* Color de fondo para cada comentario */
+    border-radius: 5px;
+  }
+  
+  .comment-item p {
+    margin: 0; /* Elimina el margen interno del párrafo dentro de cada comentario */
+  }
+  
+
+
 .wrapper {
     display: flex;
     flex-direction: column;
