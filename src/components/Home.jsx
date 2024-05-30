@@ -15,6 +15,9 @@ const Home = () => {
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [comments, setComments] = useState({});
+  const [pendingFriendRequests, setPendingFriendRequests] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+
 
   useEffect(() => {
     window.history.replaceState(null, "", "/home");
@@ -24,8 +27,27 @@ const Home = () => {
       setLoggedInUserId(userIdFromLocalStorage);
       fetchAmigas(userIdFromLocalStorage);
       fetchAllPosts();
+      if (loggedInUserId) {
+        fetchNotifications(loggedInUserId);
+      }
     }
-  }, []);
+  },  [loggedInUserId]);
+
+  const fetchNotifications = async (userId) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/api/v1/user/friendRequest/pending/${userId}`);
+        const friendRequests = response.data.map(request => ({
+            requestId: request.id,  // Asegúrate de mapear el id de la solicitud
+            senderId: request.senderId,
+            type: 'friend_request_received'
+        }));
+        setNotifications(friendRequests);
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+    }
+};
+
+  
 
   const fetchAllPosts = async () => {
     try {
@@ -79,13 +101,13 @@ const Home = () => {
 
   const handleConnect = async (friendId) => {
     try {
-      await axios.post(`http://localhost:8080/api/v1/user/connect/${loggedInUserId}/${friendId}`);
-      fetchAmigas(loggedInUserId);
+      await axios.post(`http://localhost:8080/api/v1/user/friendRequest/send/${loggedInUserId}/${friendId}`);
+      setNotifications([...notifications, { type: 'friend_request_sent', userId: friendId }]);
     } catch (error) {
       console.error('Error connecting with user:', error);
     }
   };
-
+  
   const handleLogout = () => {
     window.location.href = "/loginForm";
   };
@@ -107,6 +129,27 @@ const Home = () => {
       console.error('Error dando like:', error);
     }
   };
+
+
+  const handleAcceptFriendRequest = async (requestId, senderId) => {
+
+    try {
+        const response = await axios.post(`http://localhost:8080/api/v1/user/friendRequest/accept/${requestId}`);
+        console.log('Friend request accepted:', response.data);
+
+        // Filtrar la notificación aceptada y actualizar el estado
+        setNotifications(notifications.filter(notification => notification.requestId !== requestId));
+
+        // Actualizar la lista de amigas
+        fetchAmigas(loggedInUserId);
+    } catch (error) {
+        console.error('Error accepting friend request:', error.response ? error.response.data : error.message);
+    }
+};
+
+  
+  
+  
 
   const handleDelete = async (postId) => {
     try {
@@ -143,7 +186,7 @@ const Home = () => {
         <Link to="/mapa" className="map-link">Mapa</Link>
         <button className="logout-button" onClick={handleLogout}>Cerrar sesión</button>
       </div>
-
+  
       <div className="custom-list">
         <h3 className="h3-home">SisterHood</h3>
         <List divided relaxed>
@@ -169,7 +212,7 @@ const Home = () => {
           ))}
         </List>
       </div>
-
+  
       <div className="foro-container">
         <div className="foro-header">
           <h1>Foro</h1>
@@ -177,7 +220,7 @@ const Home = () => {
         <Link to="/crearPost" className="crear-post-link">
           <button className="crear-post-button">Crear Post</button>
         </Link>
-
+  
         <div className="posts-list">
           <h3 className="post-section-title">Últimos Posts</h3>
           {posts.length > 0 ? (
@@ -235,7 +278,7 @@ const Home = () => {
             <p>No hay posts disponibles.</p>
           )}
         </div>
-
+  
       </div>
       <CrearPost parentId={selectedPostId} onPostCreated={handlePostCreated} />
       <Modal open={showCommentModal} onClose={handleCloseCommentModal}>
@@ -244,9 +287,24 @@ const Home = () => {
           <CrearComentario postId={selectedPostId} onCommentCreated={fetchCommentsForPost} />
         </Modal.Content>
       </Modal>
-    </div>
-  );
-};
+        
+         {/* Mostrar notificaciones */}
+          {notifications.map(notification => (
+                  <div key={notification.requestId}>
+                    {notification.type === 'friend_request_received' && (
+                      <div>
+                        <span>Solicitud de amistad de {notification.senderId}</span>
+                        <Button onClick={() => handleAcceptFriendRequest(notification.requestId, notification.senderId)}>Aceptar</Button>
+                        <Button>Cancelar</Button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+
+        </div>
+      );
+      
+}
 
 export default Home;
 
