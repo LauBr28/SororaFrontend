@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './CrearPost.css';
 
 const CrearPost = ({ parentId = null, onPostCreated }) => {
   const [title, setTitle] = useState('');
@@ -35,6 +36,7 @@ const CrearPost = ({ parentId = null, onPostCreated }) => {
       // Limpiar los campos después de crear el post
       setTitle('');
       setContent('');
+      window.location.href = '/Home';
     } catch (error) {
       console.error('Error creating post:', error);
       // Manejar cualquier error de creación de post

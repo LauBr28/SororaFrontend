@@ -63,18 +63,15 @@
 }
 
 .editar-post-button {
-    width: 150px;
-    height: 45px;
-    background-color: #9c4f64; /* Color de fondo rosado oscuro */
-    border: 2px solid #fff; /* Borde blanco */
+    width: 100px;
+    height: 30px;
+    background-color: #de7ed8 ;/* Color de fondo rosado oscuro */
     outline: none;
-    border-radius: 40px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .1);
     cursor: pointer;
     font-size: 16px;
     color: #fff; /* Texto en color blanco */
-    font-weight: 700;
-    margin: 0 10px;
+    margin: 0 0 0px 1260px; 
     display: flex;
     justify-content: center; /* Centrar horizontalmente el contenido del botón */
     align-items: center; /* Centrar verticalmente el contenido del botón */
@@ -85,5 +82,27 @@
 }
 
 .editar-post-button:hover {
+    transform: scale(1.1);
+}
+
+.editar-post-button2 {
+    width: 150px;
+    height: 45px;
+    background-color: #9c4f64; /* Color de fondo verde */
+    border: 2px solid #fff; /* Borde blanco */
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff; /* Texto en color blanco */
+    font-weight: 700;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente el contenido del botón */
+    align-items: center; /* Centrar verticalmente el contenido del botón */
+}
+
+.editar-post-button2:hover {
     transform: scale(1.1);
 }

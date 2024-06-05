@@ -67,7 +67,7 @@ const EditarPost = () => {
           />
         </div>
         <div className="editar-post-buttons">
-          <button className="editar-post-button" onClick={handleSaveChanges}>
+          <button className="editar-post-button2" onClick={handleSaveChanges}>
             Guardar Cambios
           </button>
         </div>

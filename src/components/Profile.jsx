@@ -56,6 +56,9 @@ const Profile = () => {
             <button className="profile-button" onClick={handleEditProfile}>Modificar</button>
             <button className="profile-button" onClick={() => window.location.href = '/Home'}>Home</button>
           </div>
+          <div className="profile-buttons">
+            <button className="profile-button" onClick={() => window.location.href = '/verify-gender'}>Verificar Identidad</button>
+          </div>
         </div>
       </div>
         

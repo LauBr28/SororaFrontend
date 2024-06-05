@@ -114,7 +114,6 @@
 
 }
 
-
 .profile-button-image {
   width: 30px; /* Ajusta el tamaño de la imagen */
   height: 30px; /* Ajusta el tamaño de la imagen */
@@ -372,7 +371,7 @@
 .delete-button {
   position: absolute; /* Posiciona el botón de eliminar de forma absoluta */
   bottom: 10px; /* Ajusta la distancia desde la parte inferior */
-  left: 1190px; /* Ajusta la distancia desde la parte izquierda */
+  left: 1380px; /* Ajusta la distancia desde la parte izquierda */
   background-color: #ff4444;
   color: white;
   border: none;
@@ -383,4 +382,153 @@
 
 .delete-button:hover {
   background-color: #cc0000;
+}
+
+/* Estilos para el formulario de comentarios */
+.comment-form {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 20px;
+  background-color: #f9f9f9; /* Color de fondo gris claro */
+}
+
+/* Estilos para el área de texto del comentario */
+.comment-form textarea {
+  width: 100%; /* Ancho completo del área de texto */
+  min-height: 100px; /* Altura mínima del área de texto */
+  padding: 5px; /* Espaciado interno */
+  margin-bottom: 10px; /* Espacio inferior */
+  border: 1px solid #ccc; /* Borde gris */
+  border-radius: 5px; /* Bordes redondeados */
+  resize: none; /* Evita que el área de texto se pueda redimensionar */
+}
+
+/* Estilos para los botones del formulario de comentarios */
+.comment-form button {
+  background-color: #ff69b4; /* Color de fondo rosa */
+  color: #fff; /* Texto en blanco */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  padding: 8px 16px; /* Espaciado interno */
+  margin-right: 10px; /* Espacio derecho entre botones */
+  cursor: pointer; /* Cursor de puntero */
+}
+
+.comment-form button:hover {
+  background-color: #ff1493; /* Color de fondo rosa más oscuro al pasar el mouse */
+}
+
+/* Estilos para los botones "Eliminar" y "Editar" de los comentarios */
+.comment-item .delete2-button,
+.comment-item .edit-button {
+  background-color: white; /* Color de fondo blanco */
+  color: black; /* Texto en negro */
+  border: none; /* Sin borde */
+  border-radius: 3px; /* Bordes ligeramente redondeados */
+  padding: 5px 10px; /* Espaciado interno */
+  margin-right: 5px; /* Espacio a la derecha de los botones */
+  cursor: pointer; /* Cursor de puntero */
+}
+
+.comment-item .delete2-button:hover,
+.comment-item .edit-button:hover {
+  background-color: #ff69b4; /* Color de fondo rosa al pasar el mouse */
+  color: white; /* Texto en blanco */
+}
+
+.editar-post-button {
+  background-color: #e0bdce; /* Color de fondo rosa */
+  color: #fff; /* Texto en blanco */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  padding: 8px 16px; /* Espaciado interno */
+  cursor: pointer; /* Cursor de puntero */
+  margin-right: 10px; /* Espacio derecho entre botones */
+}
+
+.editar-post-button:hover {
+  background-color: #c563a1; /* Color de fondo rosa más oscuro al pasar el mouse */
+}
+
+.editar-post-link {
+  text-decoration: none; 
+/* Elimina el subrayado predeterminado del enlace */
+}
+
+.editar-post-link:hover {
+  text-decoration: underline; /* Subraya el enlace al pasar el mouse */
+
+}
+
+.notifications-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  max-height: 50vh;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  z-index: 1000;
+}
+
+.notification-item {
+  margin-bottom: 10px;
+}
+
+.friend-request-notification {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.friend-request-notification span {
+  font-size: 14px;
+}
+
+.accept-button, .cancel-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.accept-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.cancel-button {
+  background-color: #f44336;
+  color: white;
+  margin-left: 10px;
+}
+
+.notification-item:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Home.css */
+
+.connection-message {
+  background-color: #7eb480; /* Color de fondo verde */
+  color: white; /* Color del texto */
+  padding: 10px; /* Espaciado interno */
+  margin: 10px 0; /* Márgenes */
+  border-radius: 5px; /* Bordes redondeados */
+  text-align: center; /* Alinear el texto al centro */
+  font-size: 16px; /* Tamaño de fuente */
+  font-weight: bold; /* Negrita */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+
+.connect-button.requested {
+  background-color: #f82d99; /* Cambia el color del fondo */
+  color: #f1f0f0; /* Cambia el color del texto */
+  cursor: default; /* Cambia el cursor */
 }

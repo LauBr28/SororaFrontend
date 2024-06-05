@@ -3,48 +3,72 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import { List, Image, Button, Modal } from 'semantic-ui-react'; // Agrega Modal aquí
 import CrearPost from './CrearPost'; // Importa el componente CrearPost aquí
-import CrearComentario from './CrearComentario';
 import "./Home.css";
 
 const Home = () => {
   const [users, setUsers] = useState([]);
   const [loggedInUserId, setLoggedInUserId] = useState(null);
+  const [loggedInUsername, setLoggedInUsername] = useState("");
   const [amigas, setAmigas] = useState([]);
   const [posts, setPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
-  const [showCommentModal, setShowCommentModal] = useState(false);
   const [selectedPostId, setSelectedPostId] = useState(null);
-  const [comments, setComments] = useState({});
   const [pendingFriendRequests, setPendingFriendRequests] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [newCommentContent, setNewCommentContent] = useState("");
+  const [isCommentFormOpen, setIsCommentFormOpen] = useState(false);
+  const [comments, setComments] = useState({});
+  const [isEditingComment, setIsEditingComment] = useState(false);
+  const [commentBeingEdited, setCommentBeingEdited] = useState(null);
+  const [connectionMessage, setConnectionMessage] = useState("");
+  const [requestedUsers, setRequestedUsers] = useState([]);
 
 
   useEffect(() => {
     window.history.replaceState(null, "", "/home");
     fetchAllUsers();
     const userIdFromLocalStorage = localStorage.getItem('userId');
-    if (userIdFromLocalStorage) {
+    if (userIdFromLocalStorage) {  
       setLoggedInUserId(userIdFromLocalStorage);
       fetchAmigas(userIdFromLocalStorage);
       fetchAllPosts();
+      fetchUsername(userIdFromLocalStorage);
       if (loggedInUserId) {
         fetchNotifications(loggedInUserId);
       }
     }
-  },  [loggedInUserId]);
+    console.log("LoggedInUsername:", loggedInUsername);
+  }, [loggedInUserId, loggedInUsername]);
+  
 
   const fetchNotifications = async (userId) => {
     try {
         const response = await axios.get(`http://localhost:8080/api/v1/user/friendRequest/pending/${userId}`);
-        const friendRequests = response.data.map(request => ({
-            requestId: request.id,  // Asegúrate de mapear el id de la solicitud
-            senderId: request.senderId,
-            type: 'friend_request_received'
-        }));
-        setNotifications(friendRequests);
+        const friendRequests = response.data.map(async (request) => {
+            const senderResponse = await axios.get(`http://localhost:8080/api/v1/user/username/${request.senderId}`);
+            return {
+                requestId: request.id,
+                senderId: request.senderId,
+                senderUsername: senderResponse.data,
+                type: 'friend_request_received'
+            };
+        });
+        const resolvedRequests = await Promise.all(friendRequests);
+        setNotifications(resolvedRequests);
     } catch (error) {
         console.error('Error fetching notifications:', error);
     }
+};
+
+
+const fetchUsername = async (userId) => {
+  try {
+    const response = await axios.get(`http://localhost:8080/api/v1/user/username/${userId}`);
+    setLoggedInUsername(response.data);
+    localStorage.setItem('username', response.data); // Store the username in local storage
+  } catch (error) {
+    console.error('Error fetching username:', error);
+  }
 };
 
   
@@ -80,33 +104,21 @@ const Home = () => {
       console.error('Error fetching amigas:', error);
     }
   };
-  const fetchCommentsForPost = async (postId) => {
-    try {
-      const response = await axios.get(`http://localhost:8080/api/v1/user/post/${postId}/comments`);
-      console.log('Comments for post:', response.data);
-
-      // Actualiza la lista de comentarios para el post específico
-      const updatedPosts = posts.map(p => {
-        if (p.postId === postId) {
-          return { ...p, comments: response.data };
-        }
-        return p;
-      });
-      setPosts(updatedPosts);
-    } catch (error) {
-      console.error('Error fetching comments for post:', error);
-    }
-  };
-
 
   const handleConnect = async (friendId) => {
     try {
       await axios.post(`http://localhost:8080/api/v1/user/friendRequest/send/${loggedInUserId}/${friendId}`);
       setNotifications([...notifications, { type: 'friend_request_sent', userId: friendId }]);
+      setRequestedUsers([...requestedUsers, friendId]);
+      setConnectionMessage("Solicitud enviada");
+      setTimeout(() => {
+        setConnectionMessage(""); // Oculta el mensaje después de 3 segundos
+      }, 3000);
     } catch (error) {
       console.error('Error connecting with user:', error);
     }
   };
+  
   
   const handleLogout = () => {
     window.location.href = "/loginForm";
@@ -148,9 +160,6 @@ const Home = () => {
 };
 
   
-  
-  
-
   const handleDelete = async (postId) => {
     try {
       await axios.delete(`http://localhost:8080/api/v1/user/post/delete/${postId}`);
@@ -164,16 +173,86 @@ const Home = () => {
     setPosts([...posts, newPost]);
   };
 
-  const handleOpenCommentModal = (postId) => {
+  const openCommentForm = (postId) => {
     setSelectedPostId(postId);
-    setShowCommentModal(true);
+    setIsCommentFormOpen(true);
+    fetchComments(postId);
   };
-
-  const handleCloseCommentModal = () => {
-    setShowCommentModal(false);
+  
+  const closeCommentForm = () => {
+    setIsCommentFormOpen(false);
     setSelectedPostId(null);
+    setNewCommentContent("");
+    setIsEditingComment(false);
+    setCommentBeingEdited(null);
   };
 
+    // Función para obtener los comentarios de un post desde el backend
+    const fetchComments = async (postId) => {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/v1/user/comments/${selectedPostId}`);
+        // Actualizar el estado de los comentarios para el post seleccionado
+        setComments((prevComments) => ({
+          ...prevComments,
+          [postId]: response.data,
+        }));
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+  
+  const handleCommentContentChange = (e) => {
+    setNewCommentContent(e.target.value);
+  };
+
+  const handleSubmitComment = async () => {
+    try {
+      console.log("LoggedInUsername in handleSubmitComment:", loggedInUsername);
+      if (isEditingComment) {
+        // Actualiza el comentario existente
+        await axios.put(`http://localhost:8080/api/v1/user/comment/update/${commentBeingEdited.commentId}`, {
+          content: newCommentContent,
+        });
+        setIsEditingComment(false);
+        setCommentBeingEdited(null);
+      } else {
+        // Envía el comentario al backend
+        await axios.post(`http://localhost:8080/api/v1/user/comment/create/${selectedPostId}`, {
+          userId: loggedInUserId,
+          username: loggedInUsername,
+          content: newCommentContent,
+        });
+      }
+      fetchComments(selectedPostId);
+      setNewCommentContent("");
+    } catch (error) {
+      console.error("Error al crear/actualizar el comentario:", error);
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/v1/user/comment/delete/${commentId}`);
+      // Eliminar el comentario eliminado del estado de los comentarios
+      setComments((prevComments) => {
+        const updatedComments = { ...prevComments };
+        // Filtrar el comentario eliminado del estado
+        updatedComments[selectedPostId] = updatedComments[selectedPostId].filter(comment => comment.commentId !== commentId);
+        return updatedComments;
+      });
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
+
+  const handleEditComment = (comment) => {
+    setNewCommentContent(comment.content);
+    setIsEditingComment(true);
+    setCommentBeingEdited(comment);
+    setIsCommentFormOpen(true);
+  };
+
+  
   const filteredUsers = users.filter(user => user.id !== parseInt(loggedInUserId));
   const amigos = users.filter(user => amigas.some(amiga => amiga.id === user.id));
   const noAmigos = users.filter(user => !amigas.some(amiga => amiga.id === user.id) && user.id !== parseInt(loggedInUserId));
@@ -203,7 +282,12 @@ const Home = () => {
                     {amigos.includes(user) ? (
                       <span className="amiga-tag">Amiga</span>
                     ) : (
-                      <Button className="connect-button" onClick={() => handleConnect(user.id)}>Conectar</Button>
+                      <Button
+                        className={`connect-button ${requestedUsers.includes(user.id) ? 'requested' : ''}`}
+                        onClick={() => handleConnect(user.id)}
+                      >
+                        {requestedUsers.includes(user.id) ? 'Solicitud enviada' : 'Conectar'}
+                      </Button>
                     )}
                   </div>
                 </div>
@@ -234,10 +318,7 @@ const Home = () => {
                     <h4 className="post-title">{post.title}</h4>
                     <p>{post.content}</p>
                     <div className="post-actions">
-                      <button className="comment-button" onClick={() => handleOpenCommentModal(post.postId)}>
-                        Comentar
-                      </button>
-                      <span className="comment-count">{post.commentCount}</span>
+                      <button className="comment-button" onClick={() => openCommentForm(post.postId)}>Comentar</button>
                       <button
                         className="like-button"
                         onClick={() => handleLike(post.postId)}
@@ -260,16 +341,33 @@ const Home = () => {
                         </div>
                       )}
                     </div>
-                    {post.comments && (
-                      <div className="comments-section">
-                        <h5>Comentarios</h5>
-                        {post.comments.map(comment => (
-                          <div key={comment.commentId} className="comment-container">
+  
+                    {isCommentFormOpen && selectedPostId === post.postId && (
+                      <div className="comment-form">
+                        {comments[selectedPostId] && comments[selectedPostId].map((comment, index) => (
+                          <div key={index} className="comment-item">
                             <p>{comment.content}</p>
+                            <span>Por: {comment.username}</span>
+                            {parseInt(comment.userId) === parseInt(loggedInUserId) && (
+                              <div>
+                                <Button className="edit-button" onClick={() => handleEditComment(comment)}>Editar</Button>
+                                <Button className="delete2-button" onClick={() => handleDeleteComment(comment.commentId)}>Eliminar</Button>
+                              </div>
+                            )}
                           </div>
                         ))}
+                        <textarea
+                          value={newCommentContent}
+                          onChange={handleCommentContentChange}
+                          placeholder="Escribe tu comentario aquí..."
+                        ></textarea>
+                        <button onClick={handleSubmitComment}>
+                          {isEditingComment ? "Actualizar" : "Enviar"}
+                        </button>
+                        <button onClick={closeCommentForm}>Cancelar</button>
                       </div>
                     )}
+  
                   </div>
                 </div>
               ))}
@@ -278,33 +376,25 @@ const Home = () => {
             <p>No hay posts disponibles.</p>
           )}
         </div>
-  
       </div>
-      <CrearPost parentId={selectedPostId} onPostCreated={handlePostCreated} />
-      <Modal open={showCommentModal} onClose={handleCloseCommentModal}>
-        <Modal.Header>Crear Comentario</Modal.Header>
-        <Modal.Content>
-          <CrearComentario postId={selectedPostId} onCommentCreated={fetchCommentsForPost} />
-        </Modal.Content>
-      </Modal>
-        
-         {/* Mostrar notificaciones */}
-          {notifications.map(notification => (
-                  <div key={notification.requestId}>
-                    {notification.type === 'friend_request_received' && (
-                      <div>
-                        <span>Solicitud de amistad de {notification.senderId}</span>
-                        <Button onClick={() => handleAcceptFriendRequest(notification.requestId, notification.senderId)}>Aceptar</Button>
-                        <Button>Cancelar</Button>
-                      </div>
-                    )}
-                  </div>
-                ))}
-
-        </div>
-      );
-      
+  
+      <div className="notifications-container">
+        {notifications.map(notification => (
+          <div key={notification.requestId} className="notification-item">
+            {notification.type === 'friend_request_received' && (
+              <div className="friend-request-notification">
+                <span>Solicitud de amistad de {notification.senderId}</span>
+                <Button className="accept-button" onClick={() => handleAcceptFriendRequest(notification.requestId, notification.senderId)}>Aceptar</Button>
+                <Button className="cancel-button">Cancelar</Button>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+  
+  
 }
-
 export default Home;
 
